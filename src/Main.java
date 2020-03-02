@@ -7,4 +7,5 @@ public class Main {
     System.out.println(str.substring(2));
     System.out.println(str.substring(0,2));
   }
+
 }
