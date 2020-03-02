@@ -42,27 +42,51 @@ public class Graph<T> {
   Queue<T> queue = new LinkedList<>();
   queue.add(root);
   Map<T, Boolean> is_visited = new HashMap<>();
-
-
   while (!queue.isEmpty())
   {
     T currentNode = queue.remove();
     System.out.print(currentNode+", ");
     //is_visited.put(currentNode, true);
-
     //Traversing all the linked list attached to Node
     for (int i = 0; i < graph.get(currentNode).size(); i++) {
-
       if(is_visited.get(graph.get(currentNode).get(i))==null){
         queue.add(graph.get(currentNode).get(i));
         is_visited.put(graph.get(currentNode).get(i), true);
       }
     }
     System.out.println();
-
   }
   }
 
+  private void shortest_path_bfs(T src) {
+
+      Queue<T> queue = new LinkedList<>();
+      HashMap<T, Boolean> is_visited = new HashMap<>();
+      Map<T, Integer> distance = new HashMap<>();
+      Set<T> distance_key = graph.keySet();
+      for (T t: distance_key){
+        distance.put(t, Integer.MAX_VALUE);
+      }
+      distance.put(src, 0);
+
+      queue.add(src);
+      while (!queue.isEmpty()){
+        T current_node = queue.remove();
+        //All the child nodes
+        for (int i = 0; i < graph.get(current_node).size(); i++) {
+
+          if(distance.get(graph.get(current_node).get(i))==Integer.MAX_VALUE){
+            queue.add(graph.get(current_node).get(i));
+            distance.put(graph.get(current_node).get(i), 1+distance.get( current_node));
+
+          }
+        }
+      }
+
+      graph.forEach((key,value)->
+          System.out.println("Distance of "+key + " from " + src + " is "+ distance.get(key)));
+
+  }
 
   public static void main(String[] args) {
     Graph g = new Graph();
@@ -81,7 +105,7 @@ public class Graph<T> {
     g.addEdges(2,3,true);
     g.addEdges(3,5,true);
     g.addEdges(3,4,true);
-    g.bfs(0);
+    g.shortest_path_bfs(0);
     //g.print();
   }
 
